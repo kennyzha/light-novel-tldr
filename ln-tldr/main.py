@@ -5,7 +5,12 @@ import json
 import sqlite3
 
 
-reddit = praw.Reddit("tldrbot")
+reddit = praw.Reddit(client_id=os.environ['CLIENT_ID'],
+                     client_secret=os.environ['CLIENT_SECRET'],
+                     password=os.environ['REDDIT_PASSWORD'],
+                     user_agent='light novel chapter summarizer',
+                     username=os.environ['REDDIT_USERNAME'])
+
 subreddit = reddit.subreddit("noveltranslations")
 API_KEY = os.environ['API_KEY']
 
