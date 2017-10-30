@@ -3,7 +3,7 @@ import re
 import requests
 import json
 import sqlite3
-
+import os
 
 reddit = praw.Reddit(client_id=os.environ['CLIENT_ID'],
                      client_secret=os.environ['CLIENT_SECRET'],
