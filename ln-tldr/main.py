@@ -7,7 +7,7 @@ import sqlite3
 
 reddit = praw.Reddit("tldrbot")
 subreddit = reddit.subreddit("noveltranslations")
-API_KEY = ""
+API_KEY = os.environ['API_KEY']
 
 def parse_text(text):
 	chapter_regex_pattern = r'\[.*Chapter [0-9]+.*\]\(.*\)'
@@ -31,7 +31,7 @@ c = conn.cursor()
 c.execute('''CREATE TABLE IF NOT EXISTS posts
              (id text, title text, submission text)''')
 
-for submission in subreddit.new(limit=10):
+for submission in subreddit.new(limit=15):
 	c.execute("SELECT count(*) FROM posts WHERE id = ?", (submission.id,))
 	data = c.fetchone()[0]
 	if data == 1:
@@ -50,7 +50,7 @@ for submission in subreddit.new(limit=10):
 	for chapter_url in chapter_urls:
 		url = get_url(chapter_url)
 		print("Link:", url.group())
-		summary = summarize(API_KEY, 10, url.group()).json()
+		summary = summarize(API_KEY, 7, url.group()).json()
 
 		if summary.get("smi_api_error") is None:
 			submission_post += (summary.get("sm_api_content") + " ")
