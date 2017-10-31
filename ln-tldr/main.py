@@ -47,21 +47,22 @@ for submission in subreddit.new(limit=15):
 	print("Title: ", submission.title)
 
 	chapter_urls = parse_text(submission.selftext)
-	submission_post = '[Chapter summary:](/s "'
+	submission_post = ''
 
 	if not chapter_urls:
 		continue
 		
 	for chapter_url in chapter_urls:
+		submission_post += '[Chapter Preview:](/s "'
 		url = get_url(chapter_url)
 		print("Link:", url.group())
 		summary = summarize(API_KEY, 7, url.group()).json()
 
 		if summary.get("smi_api_error") is None:
-			submission_post += (summary.get("sm_api_content") + " ")
+			submission_post += (summary.get("sm_api_content") + '")/n/n')
 		else:
 			print("There was an error summarizing link ", url.group(), "from post", submission.title)
-	submission_post += '")'
+			submission_post = "Error"
 	print("Submission_post is ", submission_post)
 
 	post = (submission.id, submission.title, submission_post,)
